@@ -1,19 +1,34 @@
-def fibonacci_sum_iterative(n: int):
-    fib = 0
-    for i in range(1,n+1):
-        fib += i
-    return fib
+import time
 
-def fibonacci_sum_iterative_while(n: int):
-    fib = 0
-    while n >= 0:
-        fib += n
-        n -= 1
-    return fib
-
-def fibonacci_recursive(n: int):
+def fibonacci(n: int) -> int:
     if n == 0:
         return 0
     if n == 1:
         return 1
-    return n + fibonacci_recursive(n-1)
+    return fibonacci(n-1) + fibonacci(n-2)
+
+cache: dict[int,int] = {}
+
+def fibonacci_memoized(n: int) -> int:
+    if n in cache:
+        return cache[n]
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    cache[n] = fibonacci_memoized(n-1) + fibonacci_memoized(n-2)
+    return cache[n]
+
+
+if __name__ == "__main__":
+    fib_to_find = 30
+
+    start = time.perf_counter()
+    fib = fibonacci(fib_to_find)
+    end = time.perf_counter()
+    print(f"Fib = {fib} in {end - start:0.4f} seconds")
+
+    start = time.perf_counter()
+    fib_memoized = fibonacci_memoized(fib_to_find)
+    end = time.perf_counter()
+    print(f"Fib = {fib_memoized} in {end - start:0.4f} seconds")
