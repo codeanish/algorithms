@@ -1,5 +1,15 @@
 import time
 
+def memoize(func):
+    cache = {}
+    def wrapper(n):
+        if n in cache:
+            return cache[n]
+        cache[n] = func(n)
+        return cache[n]
+    return wrapper
+
+@memoize
 def fibonacci(n: int) -> int:
     if n == 0:
         return 0
